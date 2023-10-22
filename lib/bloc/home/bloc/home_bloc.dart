@@ -1,3 +1,4 @@
+import 'package:best_friend/api/all_breeds_response.dart';
 import 'package:best_friend/api/api_client.dart';
 import 'package:best_friend/data/models/breed_image.dart';
 import 'package:best_friend/router.dart';
@@ -12,31 +13,50 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     ApiClient client = ApiClient();
     List<BreedImage> list = List.empty(growable: true);
+    AllBreedsResponse? allBreeds;
     on<HomeEvent>((event, emit) async {
       // implement event handler
       if (event is FirstLoadEvent) {
         emit(FirstLoadState());
         //get data
-        var allBreeds = await client.getAllBreeds();
+        allBreeds = await client.getAllBreeds();
 
         String temporaryPath = (await getTemporaryDirectory()).path;
 
-        for (var element in allBreeds!.message!.entries) {
-          var resp = await client.getUrlByBreed(element.key);
-          //get and save temporary
-          await client.getImage(resp!.message as String, element.key);
+        List<Future> futureList = [];
 
-          list.add(BreedImage(
-              element.key, resp.message!, '$temporaryPath/${element.key}.jpg'));
+        for (var element in allBreeds!.message!.entries) {
+          futureList.add(getOne(client, list, temporaryPath, element.key));
         }
+
+        await Future.wait(futureList);
 
         add(DataLoadedEvent());
         router.go('/');
       }
 
       if (event is DataLoadedEvent) {
-        emit(DataLoadedState(list: list));
+        emit(DataLoadedState(list: list, allBreeds: allBreeds!, ));
       }
+
+      // if (event is ClickTileEvent) {
+
+      //   print('event.name ::' + event.name);
+
+      //   emit(ClickTileState());
+      // }
     });
+  }
+
+  Future getOne(ApiClient client, List<BreedImage> list, String temporaryPath,
+      String key) async {
+    print(key);
+    print(DateTime.now());
+
+    var resp = await client.getUrlByBreed(key);
+    //get and save temporary
+    await client.getImage(resp!.message as String, key);
+
+    list.add(BreedImage(key, resp.message!, '$temporaryPath/$key.jpg'));
   }
 }

@@ -1,10 +1,11 @@
-import 'dart:io';
 
 import 'package:best_friend/bloc/home/bloc/home_bloc.dart';
 import 'package:best_friend/core/theme_utils.dart';
 import 'package:best_friend/data/models/breed_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'grid_element.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,24 +40,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSpacing: 16),
                 itemCount: listOfBreeds.length,
                 itemBuilder: (BuildContext ctx, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      print(listOfBreeds[index].name);
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: Image.file(
-                                    File(listOfBreeds[index].temporaryPath))
-                                .image,
-                            fit: BoxFit.fill),
-                        // color: Colors.amber,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Stack(children: [Text(listOfBreeds[index].name)]),
-                    ),
-                  );
+                  return GridElement(listOfBreeds: listOfBreeds, index: index);
                 });
           }
           return Placeholder();
