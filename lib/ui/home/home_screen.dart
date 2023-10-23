@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'grid_element.dart';
+import 'widget/grid_element.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
