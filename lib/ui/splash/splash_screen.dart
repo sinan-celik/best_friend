@@ -1,4 +1,5 @@
 import 'package:best_friend/bloc/home/bloc/home_bloc.dart';
+import 'package:best_friend/core/device_utils.dart';
 import 'package:best_friend/core/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(Duration.zero, () {
       BlocProvider.of<HomeBloc>(context).add(FirstLoadEvent());
+      DeviceUtils().readVersion();
     });
 
     super.initState();

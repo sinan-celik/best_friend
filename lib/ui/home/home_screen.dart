@@ -1,7 +1,9 @@
 import 'package:best_friend/bloc/home/bloc/home_bloc.dart';
 import 'package:best_friend/core/theme_utils.dart';
 import 'package:best_friend/data/models/breed_image.dart';
+import 'package:best_friend/ui/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +88,25 @@ class HomeScreen extends StatelessWidget {
                                   'assets/svg/settings.svg',
                                 ),
                                 onTap: () {
-                                  context.go('/settings');
+                                  SystemChrome.setEnabledSystemUIMode(
+                                      SystemUiMode.manual,
+                                      overlays: [
+                                        SystemUiOverlay.bottom
+                                      ]); // to only hide the status bar
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const SettingsScreen();
+                                    },
+                                  ).then((value){
+                                     SystemChrome.setEnabledSystemUIMode(
+                                      SystemUiMode.manual,
+                                      overlays: [
+                                        SystemUiOverlay.top,
+                                        SystemUiOverlay.bottom
+                                      ]);
+                                  });
                                 },
                               )
                             ],
