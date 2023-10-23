@@ -23,6 +23,7 @@ class ThemeUtils {
   static Color modalLabelLight = const Color(0xFF000000);
   static Color veticalSeperator = const Color(0xFFD1D1D6);
   static Color modalHang = const Color(0xFFE5E5EA);
+  static Color borderGrey = const Color(0xFFE5E5EA);
   static Color labelLight = const Color(0x3C3C4399);
 
 }

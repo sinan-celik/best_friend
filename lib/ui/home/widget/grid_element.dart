@@ -24,26 +24,32 @@ class GridElement extends StatelessWidget {
       onTap: () {
         var name = listOfBreeds[index].name;
         final state = BlocProvider.of<HomeBloc>(context).state;
-        List<String> breedListMap;
+        List<String> breedListMap = [];
         if (state is DataLoadedState) {
           breedListMap = state.allBreeds.message!.entries
               .where((element) => element.key == name)
               .first
               .value;
-
-          showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (BuildContext context) {
-              return BreedDetailWidget(
-                  listOfBreeds: listOfBreeds,
-                  index: index,
-                  breedListMap: breedListMap,
-                  name: name);
-            },
-          );
         }
+        if (state is DataFilteredState) {
+          breedListMap = state.allBreeds.message!.entries
+              .where((element) => element.key == name)
+              .first
+              .value;
+        }
+
+        showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (BuildContext context) {
+            return BreedDetailWidget(
+                listOfBreeds: listOfBreeds,
+                index: index,
+                breedListMap: breedListMap,
+                name: name);
+          },
+        );
       },
       child: Container(
         alignment: Alignment.center,

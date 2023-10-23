@@ -21,4 +21,15 @@ final class DataLoadedState extends HomeState {
   List<Object> get props => [list];
 }
 
+final class DataFilteredState extends HomeState {
+  final List<BreedImage> filteredList;
+  final AllBreedsResponse allBreeds;
+
+  const DataFilteredState({required this.allBreeds, required this.filteredList});
+
+  @override
+  List<Object> get props => [filteredList];
+}
+
+
 // final class ClickTileState extends HomeState {}

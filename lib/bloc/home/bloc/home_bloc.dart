@@ -36,7 +36,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       if (event is DataLoadedEvent) {
-        emit(DataLoadedState(list: list, allBreeds: allBreeds!, ));
+        emit(DataLoadedState(
+          list: list,
+          allBreeds: allBreeds!,
+        ));
+      }
+
+      if (event is DataFilteredEvent) {
+        var listOfBreedsSearched =
+            list.where((element) => element.name.contains(event.value)).toList();
+        if (event.value.isEmpty) {
+          listOfBreedsSearched = list;
+        }
+
+        emit(DataFilteredState(
+          filteredList: listOfBreedsSearched,
+          allBreeds: allBreeds!,
+        ));
       }
 
       // if (event is ClickTileEvent) {

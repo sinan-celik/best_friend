@@ -17,6 +17,15 @@ class DataLoadedEvent extends HomeEvent {
   List<Object> get props => [];
 }
 
+class DataFilteredEvent extends HomeEvent {
+
+  final String value;
+
+  const DataFilteredEvent({required this.value});
+  @override
+  List<Object> get props => [value];
+}
+
 // class ClickTileEvent extends HomeEvent {
 //   ClickTileEvent(this.name);
 //   String name;
