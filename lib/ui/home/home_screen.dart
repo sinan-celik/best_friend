@@ -42,22 +42,26 @@ class HomeScreen extends StatelessWidget {
 
           if (state is DataFilteredState) {
             listOfBreeds = state.props[0] as List<BreedImage>;
-            // List<BreedImage> listOfBreedsSearched = state.props[0] as List<BreedImage>;
+      
           }
           return Stack(
             children: [
-              GridView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    // childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16),
-                itemCount: listOfBreeds.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return GridElement(listOfBreeds: listOfBreeds, index: index);
-                },
-              ),
+              listOfBreeds.isEmpty
+                  ? const EmptyScreen()
+                  : GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 200),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              // childAspectRatio: 3 / 2,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16),
+                      itemCount: listOfBreeds.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return GridElement(
+                            listOfBreeds: listOfBreeds, index: index);
+                      },
+                    ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 300),
                 bottom: node.hasFocus
@@ -196,5 +200,36 @@ class HomeScreen extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class EmptyScreen extends StatelessWidget {
+  const EmptyScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Wrap(
+      direction: Axis.vertical,
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        const Text(
+          'No results found',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Text(
+          'Try searching with another word',
+          style: TextStyle(fontSize: 18, color: ThemeUtils.labelLight),
+        )
+      ],
+    ));
   }
 }
